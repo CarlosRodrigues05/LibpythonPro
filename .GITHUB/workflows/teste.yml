@@ -1,33 +1,32 @@
-name: Test
+name: Python package
 
-on: 
+on: [push]
 
 jobs:
   build:
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v1
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.9
-          architecture: x64
-      - name: Instalar dependências
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
         run: |
-          pip install -r requirements-dev.txt
-      - name: Rodar flake8
-        uses: py-actions/flake8@v1
-        with:
-          checkName: 'flake8_py3'
-      - name: Rodar Testes Automáticos
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
         run: |
-          pytest --cov=libpythonpro
-      - name: Relatório Coverage
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
         run: |
-          codecov
+          pytest
