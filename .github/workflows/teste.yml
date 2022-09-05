@@ -22,7 +22,7 @@ jobs:
       - name: Rodar flake8
         uses: py-actions/flake8@v1
         with:
-          checkName: 'flake8-version'
+          checkName: 'Python Lint'
       - name: Rodar Testes Automáticos
         run: |
           pytest --cov=libpythonpro
