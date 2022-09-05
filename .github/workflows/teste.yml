@@ -15,7 +15,7 @@ jobs:
           python-version: 3.9
           archetecture: x64
       - name: Instalar dependências
-          run: |
+        run: |
             pip install -r requirements-dev.txt
       - name: Rodar flake8
         uses: py-actions/flake8@v1
