@@ -25,7 +25,7 @@ jobs:
           checkName: 'flake8_py3'
       - name: Rodar Testes Automáticos
         run: |
-          pytest --cov=libpythonpro
+          pytest --cov=Libpythonpro
       - name: Relatório Coverage
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
