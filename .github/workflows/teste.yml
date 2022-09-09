@@ -28,6 +28,6 @@ jobs:
         continue-on-error: true
       - name: Rodar Testes Automáticos
         run: |
-          pytest --cov=libpythonpro
+          pytest --cov=Libpythonpro
       
 
